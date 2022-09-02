@@ -1,0 +1,77 @@
+{"dict_lgc" : {"custom_id":["customID","Custom ID","IDOBJ_CUSTOMID"],
+                "name":["name","Name","IDOBJ_NAME"],
+                "absolute_height":["height","Height","LINEGEOMETRYC_HEIGHT"],
+                "phases":["phaseCount","Phase count","LINEGEOMETRYC_PHASECOUNT"],
+                "position_x_phase_r":["xA","Xa","LINEGEOMETRYC_XA"],
+                "position_y_phase_r":["yA","Ya","LINEGEOMETRYC_YA"],
+                "position_x_phase_s":["xB","Xb","LINEGEOMETRYC_XB"],
+                "position_y_phase_s":["yB","Yb","LINEGEOMETRYC_YB"],
+                "position_x_phase_t":["xC","Xc","LINEGEOMETRYC_XC"],
+                "position_y_phase_t":["yC","Yc","LINEGEOMETRYC_YC"],
+                "position_x_phase_n":["xN","Xn","LINEGEOMETRYC_XN"],
+                "position_y_phase_n":["yN","Yn","LINEGEOMETRYC_YN"]
+                },
+
+"dict_wc " : {"custom_id":["customID","Custom ID","Custom ID"],
+              "name":["name","Name","IDOBJ_NAME"],
+                "rated_voltage":["ratedVoltage","Rated voltage","CATAL_VOLTAGE"],
+                "rated_current":["ratedCurrent","Rated current","CONDUCTORC_RATEDCURR"],
+                "phases":["phaseCount","Phase count","CATAL_PHASES"],
+                "material":["conductorMaterial","Material","CONDUCTORC_CONDMATERIAL"],
+                "gmr":["gmr","Geometric mean radius","CONDUCTORC_GMR"],
+                "cross_section":["crossSection","Cross-section","CONDUCTORC_CROSSSECTION"],
+                "resistance_r":["r","r","CONDUCTORC_R"],
+                "allowed_temperature":["allowedTemperature","Allowed temperature","Allowed temperature"],
+                "k_cooling_time":["thermalConstantCool","Cooling time constant","CONDUCTORC_COOL"],
+                "k_heating_time":["thermalConstantHeat","Heating time constant","CONDUCTORC_HEAT"],
+                "cost_per_unit":["costPerUnit","Cost per unit","CATAL_COST"]                
+                },
+
+"dict_cc " : {"custom_id":["customID","Custom ID","Custom ID"],
+              "name":["name","Name","IDOBJ_NAME"],
+                "rated_voltage":["ratedVoltage","Rated voltage","CATAL_VOLTAGE"],
+                "rated_current":["ratedCurrent","Rated current","CONDUCTORC_RATEDCURR"],
+                "phases":["phaseCount","Rated current","CATAL_PHASES"],
+                "material":["conductorMaterial","Material","CONDUCTORC_CONDMATERIAL"],
+                "gmr":["gmr","Geometric mean radius","CONDUCTORC_GMR"],
+                "cross_section":["crossSection","Cross-section","CONDUCTORC_CROSSSECTION"],
+                "resistance_r":["r","r","CONDUCTORC_R"],
+                "reactance_x":["x","x","CABLEC_X"],
+                "susceptance_b":["bch","b","CABLEC_BCH"],
+                "resistance r0":["r0","r0","CABLEC_R0"],
+                "reactance x0":["x0","x0","CABLEC_X0"],
+                "susceptance_b0":["b0ch","b0","CABLEC_B0CH"],
+                "allowed_temperature":["allowedTemperature","Allowed temperature","Allowed temperature"],
+                "k_cooling_time":["thermalConstantCool","Cooling time constant","CONDUCTORC_COOL"],
+                "k_heating_time":["thermalConstantHeat","Heating time constant","CONDUCTORC_HEAT"],
+                "cost_per_unit":["costPerUnit","Cost per unit","CATAL_COST"]                
+                },
+
+"dict_Disc " : {"custom_id":["customID","Custom ID","Custom ID"],
+               "name":["name","Name","IDOBJ_NAME"],
+                "rated_voltage":["ratedVoltage","Rated voltage","CATAL_VOLTAGE"],
+                "rated_current":["ratedCurrent","Rated current","SWITCHC_I"],
+                "breaking_current":["breakingCurrent","Breaking current","DISCONNECTORC_BREAKINGI"],
+                "reactive_breaking_current":["reactiveBreakingCurrent","Reactive breaking current","DISCONNECTORC_REACBREAKINGI"],
+                "short_term_current":["shortTermCurrent","Short-term current","DISCONNECTORC_SHORTTERMI"],
+                "phases":["phaseCount","Phase count","CATAL_PHASES"],
+                "gang_operated":["gangOperated","Gang-operated","SWITCHC_GANG"],
+                "manufacturer":["manufacturer","Manufacturer","CATAL_MANUFACTURER"],
+                "cost_per_unit":["costPerUnit","Cost per unit","CATAL_COST"]
+                   
+                },
+
+"dict_Fuse " : {"custom_id":["customID","Custom ID","Custom ID"],
+               "name":["name","Name","IDOBJ_NAME"],
+               "fuse_type":["fuseType","Fuse type","FUSEC_TYPE"],
+                "rated_voltage":["ratedVoltage","Rated voltage","CATAL_VOLTAGE"],
+                "rated_current":["ratedCurrent","Rated current","SWITCHC_I"],
+                "breaking_current":["breakingCurrent","Breaking current","FUSEC_BREAKINGI"],
+                "phases":["phaseCount","Phase count","CATAL_PHASES"],
+                "gang_operated":["gangOperated","Gang-operated","SWITCHC_GANG"],
+                "manufacturer":["manufacturer","Manufacturer","CATAL_MANUFACTURER"],
+                "cost_per_unit":["costPerUnit","Cost per unit","CATAL_COST"]
+                   
+                }
+
+            }
