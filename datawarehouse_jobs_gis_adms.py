@@ -5,7 +5,7 @@ start_execution_time = time.time()
 ora.init_oracle_client(lib_dir=r"C:/Oracle_64/product/11.2.0/client_1/BIN/")
 
 engine_adms = sql.create_engine("mssql+pyodbc://EpsaReportes:cmXoasys2@10.238.109.61\OASYSHDB:20010/ADMS_QueryEngine?driver=SQL Server")
-engine_oracle = sql.create_engine("oracle+cx_oracle://RDJARAMILLO:cmXoasys17@PV10262/arcgis")
+engine_oracle = sql.create_engine("oracle+cx_oracle://RDJARAMILLO:Berlin22+@PV10262/arcgis")
 
 # %%
 print("Inicia lectura bases de datos ADMS")
@@ -94,7 +94,7 @@ NE_Invoker_Pending.Version = NE_Invoker_Pending.Version.str[:-2]
 NE_Invoker_Pending.datetime = NE_Invoker_Pending.datetime.replace({'a':'AM','p':'PM'},regex=True)
 NE_Invoker_Pending.datetime = list(map(lambda x: dt.datetime.strptime(x,'%d/%m/%Y %I:%M:%S %p'), NE_Invoker_Pending.datetime))
 NE_Invoker_Pending = NE_Invoker_Pending.drop(columns = 0).sort_values(by='datetime').reset_index(drop=True)
-NE_Invoker_Pending['CustomId'] = list(map(lambda x: '{datetime}_{sum}'.format(datetime= x.strftime('%Y%m%d%H%M%S'),sum = int(x.year)+int(x.month)*4+int(x.day)+int(x.hour)*70+int(x.minute)*10+int(x.second)),NE_Invoker_Pending.datetime))
+NE_Invoker_Pending['CustomId'] = list(map(lambda x: x*10 + 10000000000 + int(str(sum(list(map(int, str(x).strip()))))[-1]) ,NE_Invoker_Pending.index)) #list(map(lambda x: '{datetime}_{sum}'.format(datetime= x.strftime('%Y%m%d%H%M%S'),sum = int(x.year)+int(x.month)*4+int(x.day)+int(x.hour)*70+int(x.minute)*10+int(x.second)),NE_Invoker_Pending.datetime))
 
 # %%
 NE_Invoker_Executed['datetime'] = NE_Invoker_Executed[0].str.split('.',expand=True)[0]
@@ -102,8 +102,20 @@ NE_Invoker_Executed[['Version','KindExecution','FeederList']] = NE_Invoker_Execu
 NE_Invoker_Executed.datetime = NE_Invoker_Executed.datetime.replace({'a':'AM','p':'PM'},regex=True)
 NE_Invoker_Executed.datetime = list(map(lambda x: dt.datetime.strptime(x,'%d/%m/%Y %I:%M:%S %p'), NE_Invoker_Executed.datetime))
 NE_Invoker_Executed = NE_Invoker_Executed.drop(columns=0).sort_values(by='datetime').reset_index(drop=True)
-NE_Invoker_Executed['CustomId'] = list(map(lambda x: '{datetime}_{sum}'.format(datetime= x.strftime('%Y%m%d%H%M%S'),sum = int(x.year)+int(x.month)*4+int(x.day)+int(x.hour)*70+int(x.minute)*10+int(x.second)),NE_Invoker_Executed.datetime))
+NE_Invoker_Executed['CustomId'] = '' #list(map(lambda x: '{datetime}_{sum}'.format(datetime= x.strftime('%Y%m%d%H%M%S'),sum = int(x.year)+int(x.month)*4+int(x.day)+int(x.hour)*70+int(x.minute)*10+int(x.second)),NE_Invoker_Executed.datetime))
 
+for i in NE_Invoker_Pending.index:
+    subset = NE_Invoker_Executed.loc[
+                (NE_Invoker_Executed.FeederList == NE_Invoker_Pending.loc[i,'FeederList']) & 
+                (NE_Invoker_Executed.Version== NE_Invoker_Pending.loc[i,'Version']) & 
+                (NE_Invoker_Executed.Machine== NE_Invoker_Pending.loc[i,'Machine']) &
+                (NE_Invoker_Executed.datetime >= NE_Invoker_Pending.loc[i,'datetime']) &
+                (NE_Invoker_Executed.CustomId == ''),:]
+    
+    NE_Invoker_Executed.loc[subset.index.min(),'CustomId'] = NE_Invoker_Pending.loc[i,'CustomId']
+
+NE_Invoker_Executions = NE_Invoker_Pending.merge(NE_Invoker_Executed[['CustomId','datetime']], on = 'CustomId', how='left').rename(columns={'datetime_x':'RecievedDatetime','datetime_y':'ExecutionDatetime'})
+NE_Invoker_Executions['Executed'] = NE_Invoker_Executions['ExecutionDatetime'].notna()
 # %%
 extract_info['STATE_NAME'] = extract_info.merge(extract_state,left_on='EXTRACT_STATE_ID', right_on='ID', how = 'left')['STATE_NAME']
 extract_info['SOURCE_NAME'] = extract_info.merge(extract_source,left_on='EXTRACT_SOURCE_ID', right_on='ID', how = 'left')['SOURCE_NAME']
@@ -120,6 +132,7 @@ connection = sqlite3.connect(r'\\10.240.160.176\g$\Data\GIS-ADMS_CSRepo.db3')
 # %%
 NE_Invoker_Pending.to_sql('NE_Pending_Jobs',con=connection, if_exists='replace')
 NE_Invoker_Executed.to_sql('NE_Executed_Jobs',con=connection, if_exists='replace')
+NE_Invoker_Executions.to_sql('NE_Invoker_Executions_Jobs',con=connection, if_exists='replace')
 extract_info.to_sql('Extracts',con=connection,if_exists='replace')
 changeset_info.to_sql('Changesets',con=connection,if_exists='replace')
 changeset_hist.to_sql('ChangesetsHistory',con=connection,if_exists='replace')
